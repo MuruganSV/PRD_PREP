@@ -199,5 +199,9 @@ public class QuestionSetAnswers {
         int result5 = a16++ + b16++ + c16++ + d16++ + --a16 + --b16 + --c16 + --d16;
         System.out.println("a=" + a16 + ", b=" + b16 + ", c=" + c16 + ", d=" + d16 + ", result=" +
                 result5); // 1, 2, 3, 4 ,20
+
+
+        System.out.println(20 / 5 + -3 * 2 - 1); //-3
+        System.out.println(-7 + 3 * 2 - 1); // -2
     }
 }
