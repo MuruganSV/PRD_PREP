@@ -425,6 +425,8 @@ public class QuestionSetAnswers {
         // Input: Integer from 1 to 7
         // Output: "Monday", "Tuesday", ..., "Sunday"
         System.out.println("Day of the Week: "+ dayOftheWeek(scanner));
+
+        scanner.close();
     }
 
     public static void main(char args) {
