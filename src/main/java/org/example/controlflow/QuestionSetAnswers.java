@@ -218,7 +218,7 @@ public class QuestionSetAnswers {
         System.out.print("Side C: ");
         int c = scanner.nextInt();
 
-        if (a+b > c || b+c > a || a+c > b) {
+        if (a+b > c && b+c > a && a+c > b) {
             System.out.println("Valid triangle");
         } else {
             System.out.println("Invalid triangle");
