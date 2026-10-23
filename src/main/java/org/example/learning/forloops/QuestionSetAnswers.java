@@ -1,4 +1,4 @@
-package org.example.forloops;
+package org.example.learning.forloops;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package org.example.logicaloperators;
+package org.example.learning.logicaloperators;
 
 public class QuestionSetAnswers {
     public static void main(String args[]) {

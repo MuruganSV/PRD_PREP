@@ -1,6 +1,6 @@
-package org.example.controlflow;
+package org.example.learning.controlflow;
 
-import java.util.Scanner; // 1. Import the Scanner class
+import java.util.Scanner;
 
 public class QuestionSetAnswers {
 
