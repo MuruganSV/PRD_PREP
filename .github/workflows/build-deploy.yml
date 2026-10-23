@@ -1,0 +1,58 @@
+name: Deploy to AWS EC2 Test Environment
+
+on:
+  push:
+    branches:
+      - master # Triggers execution when a PR is merged into this branch
+
+jobs:
+  build-and-deploy:
+    name: Build Artifact and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Package Application (Build JAR)
+        run: mvn clean package -DskipTests # Skipping tests here since the PR already ran them
+
+      - name: Copy JAR to AWS EC2 via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ${{ secrets.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          source: "target/*.jar" # For Gradle, use: "build/libs/*.jar"
+          target: "/home/${{ secrets.AWS_EC2_USER }}/app/"
+          strip_components: 1
+
+      - name: Execute Remote SSH Commands to Restart Application
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ${{ secrets.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.AWS_EC2_USER }}/app/
+            
+            # Find and stop the currently running Spring Boot app on port 8080 (if any)
+            PID=$(lsof -t -i:8080)
+            if [ -n "$PID" ]; then
+              echo "Stopping current running application instance (PID: $PID)..."
+              kill -15 $PID
+              sleep 5
+            fi
+            
+            # Run the new JAR in the background and redirect logs
+            echo "Launching the new Spring Boot application jar..."
+            nohup java -jar *.jar --spring.profiles.active=test > app.log 2>&1 &
+            
+            echo "Deployment completed successfully!"

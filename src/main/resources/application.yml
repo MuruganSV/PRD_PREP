@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+app:
+  name: CODE-PREP
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com # open https://developers.google.com/oauthplayground and set oAuth custom and get the access token
+#          issuer-uri: http://localhost:9090/realms/microservice-realm
+          audiences:
+            - orders-api
+
+#    below is used for custom auth check, the attributes are defined by us, not below are to be same
+    apidAuthentication:
+      enabled: true
+      applyTo: /api/other/endpoints/**
+      embeddedHeartbeatEnabled: false
+      spid: app-name
+      url: auth/url for apid
+
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          keycloak-internal:
+#            client-id: internal-service-client
+#            client-secret: YOUR_KEYCLOAK_CLIENT_SECRET_HERE
+#            authorization-grant-type: client_credentials
+#        provider:
+#          keycloak-internal:
+#            token-uri: http://localhost:8080/realms/microservice-realm/protocol/openid-connect/token
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# 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

@@ -1,0 +1,25 @@
+name: Pull Request Build Verification
+
+on:
+  pull_request:
+    branches:
+      - master # Change this to match your base branch name (e.g., master or develop)
+
+jobs:
+  build:
+    name: Verify Compilation and Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Change to '21' or your specific Spring Boot Java version
+          distribution: 'temurin'
+          cache: 'maven' # Change to 'gradle' if you use Gradle instead of Maven
+
+      - name: Build with Gradle
+        run: gradlew clean build

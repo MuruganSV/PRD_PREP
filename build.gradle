@@ -1,5 +1,9 @@
 plugins {
     id 'java'
+    // 1. Core Spring Boot plugin (defines the overall Boot version)
+    id 'org.springframework.boot' version '3.3.4'
+    // 2. Dependency management plugin (automatically injects versions into starters)
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group 'org.example'
@@ -10,8 +14,14 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+
 }
 
 test {

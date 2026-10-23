@@ -1,0 +1,7 @@
+# --- INSERT THIS STEP TO PUBLISH TO GITHUB PACKAGES ---
+- name: Publish Artifact to GitHub Private Packages
+  run: mvn deploy -DskipTests
+  env:
+    ARTIFACTORY_URL: "https://github.com{{ github.repository }}"
+    ARTIFACTORY_USER: ${{ github.actor }}
+    ARTIFACTORY_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provided automatically by GitHub Actions
