@@ -94,17 +94,45 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection c) {
-        return false;
+        c.forEach(v -> {
+            elements[size]=v;
+            size++;
+        });
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection c) {
-        return false;
+        Object[] existingElements = new Object[size-index];
+
+        final int[] k = {index};
+        final int[] j = {0};
+
+        // take the existing elements from the given index for shifting
+        for(int i=index;i<size;i++) {
+            existingElements[j[0]] = elements[i];
+            j[0]++;
+        }
+
+
+        // keep the new elements from the mentioned index
+        c.forEach(v -> {
+            elements[k[0]] = v;
+            k[0]++;
+            size++;
+        });
+
+        // keep the existing elements in shifted place
+        for(Object ele: existingElements) {
+            elements[k[0]] = ele;
+            k[0]++;
+        }
+        return true;
     }
 
     @Override
     public void clear() {
-        this.elements = EMPTY_ELEMENT;
+        this.elements = new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -176,18 +204,49 @@ public class CustomArrayList<T> implements List<T> {
     }
 
     @Override
-    public List subList(int fromIndex, int toIndex) {
-        return null;
+    public List<T> subList(int fromIndex, int toIndex) {
+        // Exclusive of toIndex. i.e: [10,20,30,40,50] from 1 to 3 is [20,30]
+        List<T> subListElements = new CustomArrayList<>(toIndex-fromIndex);
+        for(int i=fromIndex;i<toIndex;i++) {
+            subListElements.add((T) elements[i]);
+        }
+        return subListElements;
     }
 
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        Object[] existingElements = elements;
+
+        this.clear();
+
+        c.forEach(v -> {
+            for(int i=0;i<existingElements.length;i++){
+                if(existingElements[i] == v) {
+                    elements[size] = v;
+                    size++;
+                }
+            }
+        });
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        Object[] finalElements = new Object[DEFAULT_CAPACITY];
+
+        int[] index = {0};
+
+        for(int i=0; i<size;i++) {
+            if(elements[i] !=null && !c.contains(elements[i])) {
+                finalElements[index[0]] = elements[i];
+                index[0]++;
+            }
+        }
+
+        size = index[0];
+        elements = finalElements;
+
+        return true;
     }
 
     @Override
