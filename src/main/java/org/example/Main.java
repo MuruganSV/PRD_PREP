@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @SpringBootApplication
 public class Main {
@@ -16,6 +17,8 @@ public class Main {
         SpringApplication.run(Main.class, args);
 
         List<String> customListString = new CustomArrayList<>();
+
+        new ArrayList<>();
 
 //        CustomArrayList<String> myList = new CustomArrayList<>();
 //        myList.add("Murugan");
@@ -64,6 +67,44 @@ public class Main {
 
         System.out.println("contains all value: "+customListString.containsAll(List.of("Mathina", "Murugan")));
 
+        System.out.println("====================================");
+
+        List<String> list = new ArrayList<>();
+
+        list.add("Murugan");
+        list.add("Mathina");
+        list.add("Liyana");
+        list.add("PugazhKumaran");
+        list.add("Srinivasan");
+        list.add("Vijayarani");
+        list.add("Vithiya");
+
+        ListIterator<String> newListIterator = list.listIterator();
+
+//        while (newListIterator.hasNext()) {
+//            System.out.println("the value is: "+newListIterator.next());
+//            newListIterator.set("MURUGANMATHINA");
+//            System.out.println("=================");
+//        }
+//
+//        System.out.println("the element at 0: "+list.get(0)+ ", at 1: "+list.get(1));
+
+
+
+        ListIterator<String> iterator = customListString.listIterator();
+
+        System.out.println("====================================");
+
+       while(iterator.hasNext()) {
+           System.out.println("next value: "+iterator.next());
+           iterator.set("MuruganMathina");
+           iterator.remove();
+           System.out.println("====================================");
+       }
+
+       System.out.println("the size is: "+customListString.size()+", is empty: "+customListString.isEmpty());
+
+//        System.out.println("the first element is: "+customListString.get(0)+", second element: "+customListString.get(1));
 
 
 

@@ -23,6 +23,14 @@ public class CustomArrayList<T> implements List<T> {
         CUSTOM_CAPACITY = customSize;
     }
 
+    public CustomArrayList(Collection c) {
+        this.elements = new Object[c.size()];
+        for(Object o: c) {
+            elements[size]=o;
+            size++;
+        }
+    }
+
     @Override
     public int size() {
         return size;
@@ -30,7 +38,7 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return elements.length == 0;
+        return size == 0;
     }
 
     @Override
@@ -55,8 +63,8 @@ public class CustomArrayList<T> implements List<T> {
     }
 
     @Override
-    public Iterator iterator() {
-        return Arrays.stream(elements).iterator();
+    public Iterator<T> iterator() {
+        return new CustomArrayIterator();
     }
 
     @Override
@@ -194,13 +202,13 @@ public class CustomArrayList<T> implements List<T> {
     }
 
     @Override
-    public ListIterator listIterator() {
-        return Arrays.stream(elements).toList().listIterator();
+    public ListIterator<T> listIterator() {
+        return new CustomArrayListIterator(0);
     }
 
     @Override
-    public ListIterator listIterator(int index) {
-        return subList(index, size).listIterator();
+    public ListIterator<T> listIterator(int index) {
+        return new CustomArrayListIterator(index);
     }
 
     @Override
@@ -270,5 +278,89 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public Object[] toArray(Object[] a) {
         return new Object[0];
+    }
+
+    private class CustomArrayIterator implements Iterator<T> {
+
+        private int cursor = 0;
+
+        public CustomArrayIterator() {}
+
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        @Override
+        public T next() {
+            if(!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return (T) elements[cursor++];
+        }
+
+        @Override
+        public void remove() {
+            CustomArrayList.this.remove(cursor-1);
+        }
+    }
+
+    private class CustomArrayListIterator implements ListIterator<T> {
+        private int cursor = 0;
+
+        public CustomArrayListIterator(int index) {
+            this.cursor = index;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        @Override
+        public T next() {
+            if(!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return (T) elements[cursor++];
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return cursor > -1;
+        }
+
+        @Override
+        public T previous() {
+            if(!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            return (T) elements[cursor--];
+        }
+
+        @Override
+        public int nextIndex() {
+            return cursor+1;
+        }
+
+        @Override
+        public int previousIndex() {
+            return cursor-1;
+        }
+
+        @Override
+        public void remove() {
+            CustomArrayList.this.remove(cursor-1);
+        }
+
+        @Override
+        public void set(T t) {
+            CustomArrayList.this.set(cursor-1, t);
+        }
+
+        @Override
+        public void add(T t) {
+            CustomArrayList.this.add(cursor-1, t);
+        }
     }
 }
