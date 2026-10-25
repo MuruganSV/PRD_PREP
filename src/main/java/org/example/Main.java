@@ -62,6 +62,8 @@ public class Main {
 
         System.out.println("the size is: "+customListString.size());
 
+        System.out.println("contains all value: "+customListString.containsAll(List.of("Mathina", "Murugan")));
+
 
 
 

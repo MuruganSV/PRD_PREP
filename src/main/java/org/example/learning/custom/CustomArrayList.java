@@ -195,12 +195,12 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public ListIterator listIterator() {
-        return null;
+        return Arrays.stream(elements).toList().listIterator();
     }
 
     @Override
     public ListIterator listIterator(int index) {
-        return null;
+        return subList(index, size).listIterator();
     }
 
     @Override
@@ -251,7 +251,20 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        boolean isNotMatching = false;
+        for(Object v: c) {
+            for (Object ele : elements) {
+                if (ele !=null && !ele.equals(v)) {
+                    isNotMatching = true;
+                    break;
+                }
+            }
+
+            if(isNotMatching) {
+                break;
+            }
+        }
+        return !isNotMatching;
     }
 
     @Override
